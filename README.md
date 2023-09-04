@@ -34,7 +34,7 @@
 
      或者使用poetry，项目里有提供好的`pyproject.toml`配置文件
 
-  3. 在`app.py`下运行命令
+  3. 在`app.py`目录下运行命令
 
      > flask run
 
@@ -48,7 +48,7 @@
 
 1. 运行`flask run`后，提示
 
-   > INFO     | app:<module>:12 - 请填写config文件下的配置文件后重新启动
+   > INFO     | app:<module>:12 - 请填写config文件夹下的配置文件后重新启动
 
    - config/config.json文件
 
@@ -70,7 +70,7 @@
 
    ![image-20230904183216353](README.assets/image-20230904183216353.png)
 
-   选择好自己的姓名和学号后点击登录即可（如果全是空白请检查data.xlsx)
+   填写自己的学号和姓名后点击登录即可
 
 3. `/score-form`打分界面
 
