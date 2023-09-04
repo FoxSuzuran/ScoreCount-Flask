@@ -68,7 +68,7 @@
 
 2. `/login`页面
 
-   ![image-20230904163442288](README.assets/image-20230904163442288.png)
+   ![image-20230904183216353](README.assets/image-20230904183216353.png)
 
    选择好自己的姓名和学号后点击登录即可（如果全是空白请检查data.xlsx)
 

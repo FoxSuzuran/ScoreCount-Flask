@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 
-import loguru, os
+import loguru
+import os
 
 from src import generate_xlsx_file
 from src.utils import check_file, find_max_min, calculate_data, create_xlsx
@@ -65,13 +66,17 @@ def management():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = StudentLoginForm()
-    # 构建学号-姓名格式的选项列表
-    student_data = [f"{student_id}-{student_name}" for student_id, student_name in
-                    read_student_data().items()]
-    form.student.choices = student_data
+    student_data = read_student_data()
     if form.validate_on_submit():
-        session["student"] = form.student.data.split("-")[0]
-        return redirect(url_for('score_form'))
+        student_id = form.student_id.data
+        student_name = form.student_name.data
+
+        if student_data.get(student_id) == student_name:
+            flash('登录成功！')
+            session["student"] = student_id
+            return redirect(url_for('score_form'))
+        else:
+            flash("学号和姓名不匹配，请重试")
     return render_template('student_login.html', form=form)
 
 

@@ -14,13 +14,14 @@
     <form method="POST" action="/login">
         {{ form.hidden_tag() }}
         <div class="mb-3">
-            <label for="student" class="form-label">选择身份：</label>
-            <select class="form-select" id="student" name="student" required>
-                <!-- 在这里使用后端代码将从 JSON 中读取的用户名填充下拉框选项 -->
-                {% for student in form.student.choices %}
-                    <option value="{{ student }}">{{ student }}</option>
-                {% endfor %}
-            </select>
+            <div class="mb-3">
+                {{ form.student_id.label(class="form-label") }}
+                {{ form.student_id(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {{ form.student_name.label(class="form-label") }}
+                {{ form.student_name(class="form-control") }}
+            </div>
         </div>
         {{ form.submit(class="btn btn-primary") }}
     </form>
