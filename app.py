@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 
 import loguru
 import os
+import sys
 
 from src import generate_xlsx_file
 from src.utils import check_file, find_max_min, calculate_data, create_xlsx
@@ -11,7 +12,8 @@ from src.student import StudentLoginForm, read_student_data
 # 添加你的检查逻辑，如果不通过，就退出应用
 if not check_file():
     loguru.logger.info("请填写config文件下的配置文件后重新启动")
-    exit(1)
+    os.system("pause")
+    sys.exit(1)
 
 app = Flask(__name__)
 
@@ -82,6 +84,8 @@ def login():
 
 @app.route('/score-form', methods=['GET', 'POST'])
 def score_form():
+    if session.get("student") is None:
+        return '<script> alert("请先登录");window.open("/login");</script>'
     score_min, score_max = find_max_min()
     return render_template('score_form.html', students=read_student_data(), min=score_min, max=score_max)
 

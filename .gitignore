@@ -165,3 +165,7 @@ data/
 FinalScore/
 config/
 
+#package
+package_app.py
+uestc.ico
+
