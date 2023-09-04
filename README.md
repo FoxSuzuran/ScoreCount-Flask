@@ -29,6 +29,10 @@
 
      > git clone https://github.com/FoxSuzuran/ScoreCount-Flask.git
 
+     也可以使用gitee
+
+     > git clone https://gitee.com/FoxSuzuran/ScoreCount-Flask.git
+
   2. 安装依赖
 
      > pip install -r requirements.txt
