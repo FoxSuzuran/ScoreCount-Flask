@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>填写表格</title>
+    <!-- 使用Bootstrap样式 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center">填写表格</h1>
+    <div class="text-danger" style="font-size: 20px">
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
+    </div>
+    <form method="POST" action="/submit-form" id="score-form">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>学号</th>
+                <th>姓名</th>
+                <th>思想道德素质分</th>
+                <th>身心素质分</th>
+                <th>审美与人文素养分</th>
+                <th>劳动素养分</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student_id, student_name in students.items() %}
+                <tr>
+                    <td>{{ student_id }}</td>
+                    <td>{{ student_name }}</td>
+                    {% if student_id != session['student'] %}
+                        <td><input type="number" name="score_{{ student_id }}_1" min="{{ min }}" max="{{ max }}"
+                                   value="" required></td>
+                        <td><input type="number" name="score_{{ student_id }}_2" min="{{ min }}" max="{{ max }}"
+                                   value="" required></td>
+                        <td><input type="number" name="score_{{ student_id }}_3" min="{{ min }}" max="{{ max }}"
+                                   value="" required></td>
+                        <td><input type="number" name="score_{{ student_id }}_4" min="{{ min }}" max="{{ max }}"
+                                   value="" required></td>
+                    {% else %}
+                        <td colspan="4">不能给自己打分</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">提交</button>
+    </form>
+</div>
+
+<script>
+    // Load data from localStorage and populate form fields
+    document.addEventListener('DOMContentLoaded', function () {
+        {% for student_id, student_name in students.items() %}
+            {% if student_id != session['student'] %}
+                document.querySelector('input[name="score_{{ student_id }}_1"]').value = localStorage.getItem('score_{{ student_id }}_1') || '';
+                document.querySelector('input[name="score_{{ student_id }}_2"]').value = localStorage.getItem('score_{{ student_id }}_2') || '';
+                document.querySelector('input[name="score_{{ student_id }}_3"]').value = localStorage.getItem('score_{{ student_id }}_3') || '';
+                document.querySelector('input[name="score_{{ student_id }}_4"]').value = localStorage.getItem('score_{{ student_id }}_4') || '';
+            {% endif %}
+        {% endfor %}
+    });
+
+    // Save form data to localStorage when the form is submitted
+    document.getElementById('score-form').addEventListener('submit', function () {
+        {% for student_id, student_name in students.items() %}
+            {% if student_id != session['student'] %}
+                localStorage.setItem('score_{{ student_id }}_1', document.querySelector('input[name="score_{{ student_id }}_1"]').value);
+                localStorage.setItem('score_{{ student_id }}_2', document.querySelector('input[name="score_{{ student_id }}_2"]').value);
+                localStorage.setItem('score_{{ student_id }}_3', document.querySelector('input[name="score_{{ student_id }}_3"]').value);
+                localStorage.setItem('score_{{ student_id }}_4', document.querySelector('input[name="score_{{ student_id }}_4"]').value);
+            {% endif %}
+        {% endfor %}
+    });
+</script>
+</body>
+</html>
