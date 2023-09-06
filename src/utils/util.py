@@ -128,6 +128,8 @@ def create_xlsx(student_scores, score_type):
     else:
         raise ValueError("Invalid score_type")
 
+    score_list.reverse()
+
     # 分数区间计算
     total_students = len(score_list)
     a_percentage = round(total_students * 0.15)
@@ -135,7 +137,7 @@ def create_xlsx(student_scores, score_type):
     c_percentage = round(total_students * 0.35)
 
     # 创建Excel文件
-    score_headers = ["学号", "姓名", "分数", "等级"]
+    score_headers = ["学号", "姓名", "分数", "等级", "实际分数"]
     file_name = os.path.join("FinalScore", f"{score_type}.xlsx")
     wb = openpyxl.Workbook()
     ws = wb.active
@@ -144,21 +146,22 @@ def create_xlsx(student_scores, score_type):
     for student_info in score_list:
         student_id, score = student_info
         student_name = student.get(student_id)
+        student_score = score
 
         # 根据分数计算等级和分数
-        if score_list.index(student_info) < a_percentage:
+        if student_score >= score_list[a_percentage - 1][1]:
             level = 'A'
             score = 93
-        elif score_list.index(student_info) < (a_percentage + b_percentage):
+        elif student_score >= score_list[a_percentage + b_percentage - 1][1]:
             level = 'B'
             score = 91
-        elif score_list.index(student_info) < (a_percentage + b_percentage + c_percentage):
+        elif student_score >= score_list[a_percentage + b_percentage + c_percentage - 1][1]:
             level = 'C'
             score = 89
         else:
             level = 'D'
             score = 87
 
-        ws.append([student_id, student_name, score, level])
+        ws.append([student_id, student_name, score, level, student_score])
 
     wb.save(file_name)
